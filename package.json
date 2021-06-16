@@ -8,6 +8,11 @@
         "start": "nodemon --exec babel-node server.js",
         "prepare": "husky install"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "eslint ."
+        }
+    },
     "author": "",
     "license": "ISC",
     "devDependencies": {
