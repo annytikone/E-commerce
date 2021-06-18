@@ -1,7 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import routes from './Routes/ecommerceRoutes';
+import passport from 'passport';
+// const passport = require('./Passport/passport-config')(passport);
 
+import userRoutes from './Routes/userRoutes';
 import { handleError } from './ErrorHandler/error';
 
 const app = express();
@@ -11,7 +13,11 @@ app.listen(8080, () => {
   console.log('Ecommerce App is running on 8080');
 });
 
-app.use('/v1/ecommerce/', routes);
+app.use(passport.initialize());
+app.use(passport.session());
+require('./Passport/passport-config')(passport);
+
+app.use('/v1/ecommerce/', userRoutes);
 
 app.use(async (err, req, res, next) => {
   console.log('Fired this api:->: %s %s ', await req.url, await req.meth);

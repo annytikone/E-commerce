@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
     default: ['user'],
   },
   address: { type: Array, default: [] },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model('User', userSchema);
