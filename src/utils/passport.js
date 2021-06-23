@@ -1,5 +1,7 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { User } from '../Model/User';
+
+import User from '../model/user.model.js';
+
 const passport = require('passport');
 
 const secret = 'secret';
@@ -13,7 +15,6 @@ module.exports = () =>
     new Strategy(opts, (payload, done) => {
       User.findById(payload.id).then((user) => {
         if (user) {
-          console.log('Authenticating user through passport:', user);
           return done(null, {
             id: user.id,
             name: user.name,

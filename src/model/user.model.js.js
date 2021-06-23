@@ -1,10 +1,7 @@
 /* eslint-disable max-len */
 import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
 import mongoose from './connect';
-import Product from './Product';
-import { ErrorHandler } from '../ErrorHandler/error';
+
 const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
@@ -64,24 +61,5 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
-// eslint-disable-next-line consistent-return
-async function createUser(newUser, next) {
-  try {
-    const hashedPassword = await new Promise((resolve, reject) => {
-      bcrypt.hash(newUser.password, 10, (err, hash) => {
-        if (err) reject(err);
-        resolve(hash);
-      });
-    });
 
-    newUser.password = hashedPassword;
-    newUser.passwordConfirm = hashedPassword;
-
-    return User.create(newUser);
-  } catch (err) {
-    console.log('model catch', err);
-
-    next(err);
-  }
-}
-module.exports = { User, createUser };
+module.exports = User;

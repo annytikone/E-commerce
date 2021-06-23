@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 // const passport = require('./Passport/passport-config')(passport);
 
-import userRoutes from './Routes/userRoutes';
-import { handleError } from './ErrorHandler/error';
+import userRoutes from './routes/user.routes';
+import { handleError } from './middlewares/errorHandler';
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,8 +14,9 @@ app.listen(8080, () => {
 });
 
 app.use(passport.initialize());
+
 app.use(passport.session());
-require('./Passport/passport-config')(passport);
+require('./utils/passport')(passport);
 
 app.use('/v1/ecommerce/', userRoutes);
 

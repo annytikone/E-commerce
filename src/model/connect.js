@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-
-mongoose.connect('mongodb://localhost/ecommerce', {
+import config from '../config/config';
+console.log('**********************', config.dbConfig);
+mongoose.connect(`mongodb:${config.dbConfig}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
