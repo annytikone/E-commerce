@@ -74,7 +74,6 @@ const login = async (req, res, next) => {
   try {
     const errors = {};
     const { email, password } = req.body;
-    console.log('login process', email, password);
 
     User.findOne({ email })
       .select('+password')
@@ -205,10 +204,24 @@ const confirmation = async (req, res, next) => {
   }
 };
 
+async function changeRoleToSeller(req, res, next) {
+  try {
+    const { user } = req;
+    const changeRole = await User.updateOne(
+      { email: user.email },
+      { $addToSet: { role: ['seller'] } }
+    );
+    return res.json(changeRole);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   create,
   login,
   viewProfile,
   updateProfile,
   confirmation,
+  changeRoleToSeller,
 };
