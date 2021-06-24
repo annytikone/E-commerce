@@ -26,7 +26,8 @@ const getHashedPassword = async (password) =>
  * @param {Object} res
  * @param {Function} next
  */
-const create = async (req, res, next) => {
+// eslint-disable-next-line consistent-return
+async function create(req, res, next) {
   const newUser = req.body;
   try {
     const hashedPassword = await getHashedPassword(newUser.password);
@@ -60,7 +61,7 @@ const create = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
 /**
  * Login.
@@ -70,7 +71,7 @@ const create = async (req, res, next) => {
  * @param {Function} next
  */
 
-const login = async (req, res, next) => {
+async function login(req, res, next) {
   try {
     const errors = {};
     const { email, password } = req.body;
@@ -111,7 +112,7 @@ const login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
 /**
  * view profile of logged in user.
@@ -120,14 +121,14 @@ const login = async (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-const viewProfile = async (req, res, next) => {
+async function viewProfile(req, res, next) {
   try {
     const user = await User.find({ email: req.user.email });
     res.json(user);
   } catch (err) {
     next(err);
   }
-};
+}
 
 /**
  * update profile of logged in user.
@@ -136,7 +137,7 @@ const viewProfile = async (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-const updateProfile = async (req, res, next) => {
+async function updateProfile(req, res, next) {
   try {
     const errors = {};
     const { newpassword, oldpassword } = req.body;
@@ -176,10 +177,16 @@ const updateProfile = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-// email verification
-const confirmation = async (req, res, next) => {
+/**
+ * Email Verification of new user.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+async function confirmation(req, res, next) {
   try {
     const token = req.query.auth;
     const temp = await verifyToken.verifyToken(token, secret);
@@ -202,8 +209,17 @@ const confirmation = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
+/**
+ * Change Role To Seller.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+
+// eslint-disable-next-line consistent-return
 async function changeRoleToSeller(req, res, next) {
   try {
     const { user } = req;
