@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
+
 import mongoose from './connect';
 
 const { Schema } = mongoose;
@@ -59,6 +61,17 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+/*
+userSchema.pre('save', async function (next) {
+  console.log('presave hit');
+  if (!this.isModified('password')) {
+    return next();
+  }
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+});
+*/
 
 const User = mongoose.model('User', userSchema);
 

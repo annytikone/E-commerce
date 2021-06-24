@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import passport from 'passport';
+import config from './config/config';
 // const passport = require('./Passport/passport-config')(passport);
 
 import userRoutes from './routes/user.routes';
@@ -9,8 +10,8 @@ import { handleError } from './middlewares/errorHandler';
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.listen(8080, () => {
-  console.log('Ecommerce App is running on 8080');
+app.listen(config.PORT, () => {
+  console.log(`Ecommerce App is running on ${config.PORT} `);
 });
 
 app.use(passport.initialize());

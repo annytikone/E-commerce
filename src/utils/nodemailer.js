@@ -1,23 +1,20 @@
 import nodemailer from 'nodemailer';
+import config from '../config/config';
 
 module.exports.sendEmailByNodemailer = (receipent, message, attachment) =>
   new Promise((resolve, reject) => {
-    const smtpTransport = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: '',
-        pass: '',
-      },
-    });
+    console.log('coming upto here', config.nodemailerConfig);
+    const smtpTransport = nodemailer.createTransport(config.nodemailerConfig);
+    /* var mailOptions = { from: 'no-reply@yourwebapplication.com', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n' }; */
 
     const data = {
-      from: 'anikettikone44@gmail.com',
+      from: 'no-reply@deqode.com',
       to: receipent,
       cc: message.cc,
       subject: message.subject,
       text: message.text,
       inline: attachment,
-      html: message.html + '  ' + message.text,
+      html: `${message.html}   \n  ${message.text}`,
     };
 
     smtpTransport.sendMail(data, (error, response) => {

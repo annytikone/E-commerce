@@ -1,22 +1,26 @@
 /* eslint-disable no-console */
 import express from 'express';
 import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import User from '../model/user.model.js.js';
+import User from '../model/user.model';
 import userController from '../controller/user.controller';
+import sendMailByNodemailer from '../utils/nodemailer';
+import verifyToken from '../helper/emailAuthorization';
 
 const router = express.Router();
-module.exports = router;
 
 router.get('/test', async (req, res) => {
   const user = await User.find({});
-
-  console.log(user);
-
   return res.json(user);
 });
 
+router.post('/testauth', async (req, res) => {
+  const { token } = req.body;
+  const temp = await verifyToken.verifyToken(token, 'Amaterasu');
+  console.log('temp', temp);
+  res.json(temp);
+});
+
+// SignUp
 router.post('/signup', userController.create);
 
 // Login
@@ -33,3 +37,8 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   userController.updateProfile
 );
+
+// email verification
+router.get('/confirmation', userController.confirmation);
+
+module.exports = router;
