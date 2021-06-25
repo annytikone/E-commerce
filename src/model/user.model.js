@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 import validator from 'validator';
-import bcrypt from 'bcryptjs';
 
-import mongoose from './connect';
+import mongoose from '../utils/connect';
 
 const { Schema } = mongoose;
 
