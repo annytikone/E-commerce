@@ -1,9 +1,9 @@
-import mongoose from './connect';
+import mongoose from '../utils/connect';
 
 const { Schema } = mongoose;
 
 const productSchema = mongoose.Schema({
-  imagePath: {
+  imageUrl: {
     type: String,
   },
   title: {
@@ -27,10 +27,10 @@ const productSchema = mongoose.Schema({
   size: {
     type: String,
   },
-  quantity: {
+  date: {
     type: Number,
   },
-  date: {
+  quantity: {
     type: Number,
   },
   listedBy: { type: Schema.Types.ObjectId, ref: 'User' },

@@ -5,6 +5,7 @@ import config from './config/config';
 // const passport = require('./Passport/passport-config')(passport);
 
 import userRoutes from './routes/user.routes';
+import productRoutes from './routes/product.routes';
 import { handleError } from './middlewares/errorHandler';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(passport.session());
 require('./utils/passport')(passport);
 
 app.use('/v1/ecommerce/', userRoutes);
+app.use('/v1/ecommerce/products', productRoutes);
 
 app.use(async (err, req, res, next) => {
   console.log('Fired this api:->: %s %s ', await req.url, await req.meth);

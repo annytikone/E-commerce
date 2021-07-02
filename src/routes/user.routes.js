@@ -2,6 +2,7 @@
 import express from 'express';
 import passport from 'passport';
 import userController from '../controller/user.controller';
+import roleAuth from '../middlewares/roleAuthentication';
 
 const router = express.Router();
 
@@ -31,6 +32,13 @@ router.get('/confirmation', userController.confirmation);
 router.post(
   '/becomeSeller',
   passport.authenticate('jwt', { session: false }),
+  userController.changeRoleToSeller
+);
+
+router.post(
+  '/roleauth',
+  passport.authenticate('jwt', { session: false }),
+  roleAuth,
   userController.changeRoleToSeller
 );
 
