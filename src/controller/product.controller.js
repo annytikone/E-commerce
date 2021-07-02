@@ -49,4 +49,23 @@ async function getAllProductsBySeller(req, res, next) {
   }
 }
 
+/**
+ * List Products by seller.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+// eslint-disable-next-line consistent-return
+async function updateProduct(req, res, next) {
+  try {
+    const { user } = req;
+    const products = await productService.getAllProductsBySeller(user);
+    console.log('listed products:', products);
+    return res.json(products);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = { create, getAllProductsBySeller };
