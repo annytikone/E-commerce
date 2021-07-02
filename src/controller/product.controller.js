@@ -17,27 +17,36 @@ const secret = config.JWTSecret;
 // eslint-disable-next-line consistent-return
 async function create(req, res, next) {
   const product = req.body;
-  const user = {
-    cart: [],
-    role: ['user'],
-    address: ['pune', 'mumbai'],
-    isActive: false,
-    name: 'aniket',
-    email: 'aniket8@gmail.com',
-    mobileNo: '76686957306',
-    password: '$2a$10$kCbVtq0zi70XnBaMuHe1aO/3XsOufF4S4DsHoTsW1QLWLhdwsL0r2',
-    passwordConfirm:
-      '$2a$10$kCbVtq0zi70XnBaMuHe1aO/3XsOufF4S4DsHoTsW1QLWLhdwsL0r2',
-    __v: 0,
-  };
-  product.listedBy = '60d5f138e0181019d1e191fc';
+  const { user } = req;
+
+  product.listedBy = user.id;
   try {
     const addedProduct = await productService.addProducts(product);
     console.log('product created:', addedProduct);
+    return res.json(addedProduct);
   } catch (err) {
     console.log('catched error:', err);
     next(err);
   }
 }
 
-module.exports = { create };
+/**
+ * List Products by seller.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+// eslint-disable-next-line consistent-return
+async function getAllProductsBySeller(req, res, next) {
+  try {
+    const { user } = req;
+    const products = await productService.getAllProductsBySeller(user);
+    console.log('listed products:', products);
+    return res.json(products);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { create, getAllProductsBySeller };

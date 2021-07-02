@@ -7,6 +7,16 @@ import roleAuth from '../middlewares/roleAuthentication';
 const router = express.Router();
 
 //add product
-router.post('/addProduct', productController.create);
+router.post(
+  '/addProduct',
+  passport.authenticate('jwt', { session: false }),
+  productController.create
+);
+
+router.get(
+  '/getProductsbySeller',
+  passport.authenticate('jwt', { session: false }),
+  productController.getAllProductsBySeller
+);
 
 module.exports = router;

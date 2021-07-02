@@ -8,8 +8,14 @@ import Product from '../model/product.model';
  * @param   {Object}  user
  * @returns {Promise}
  */
-async function getAllProducts(query, sort) {
-  return Product.find(query, null, sort);
+
+async function getAllProductsBySeller(user) {
+  return Product.find({ listedBy: user.id })
+    .populate('listedBy')
+    .exec((err, items) => {
+      console.log('Populated User ' + items, items.listedBy);
+      return items;
+    });
 }
 
 /**
@@ -22,12 +28,12 @@ async function getAllProducts(query, sort) {
 async function addProducts(product) {
   return Product.create(product)
     .then((addedproduct) => addedproduct)
-    .catch(User.NotFoundError, () => {
-      throw Boom.notFound('User not found');
+    .catch((err) => {
+      console.log('add product err:', err);
     });
 }
 
 module.exports = {
-  getAllProducts,
+  getAllProductsBySeller,
   addProducts,
 };
