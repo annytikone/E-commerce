@@ -22,10 +22,8 @@ async function create(req, res, next) {
   product.listedBy = user.id;
   try {
     const addedProduct = await productService.addProducts(product);
-    console.log('product created:', addedProduct);
     return res.json(addedProduct);
   } catch (err) {
-    console.log('catched error:', err);
     next(err);
   }
 }
@@ -63,11 +61,7 @@ async function getAllProductsBySeller(req, res, next) {
       };
     }
 
-    const products = await productService.getAllProductsBySeller(
-      query,
-      perPage
-    );
-    console.log('listed products:', products);
+    const products = await productService.getAllProducts(query, perPage);
     return res.json(products);
   } catch (err) {
     next(err);
@@ -85,12 +79,32 @@ async function getAllProductsBySeller(req, res, next) {
 async function updateProduct(req, res, next) {
   try {
     const { user } = req;
-    const products = await productService.getAllProductsBySeller(user);
-    console.log('listed products:', products);
+    const product = req.body;
+    const query = { listedBy: user.id, _id: product.id };
+
+    const products = await productService.updateProducts(product, query);
     return res.json(products);
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { create, getAllProductsBySeller };
+// eslint-disable-next-line consistent-return
+async function deleteProduct(req, res, next) {
+  try {
+    const { user } = req;
+    const product = req.body;
+    const query = { listedBy: user.id, _id: product.id };
+    const deletedProduct = await productService.deleteProducts(query);
+    return res.json(deletedProduct);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = {
+  create,
+  getAllProductsBySeller,
+  updateProduct,
+  deleteProduct,
+};

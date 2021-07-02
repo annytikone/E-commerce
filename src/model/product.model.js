@@ -17,11 +17,12 @@ const productSchema = mongoose.Schema({
   department: {
     type: String,
     enum: ['Management', 'IT & Network', 'R&D', 'Manufacturing'],
+    default: ['Manufacturing'],
   },
   category: {
     type: String,
     enum: ['Hardware', 'Software', 'Toys', 'Electronics', 'Fashion', 'Beauty'],
-    default: ['Default'],
+    default: ['Electronics'],
   },
   price: {
     type: Number,
