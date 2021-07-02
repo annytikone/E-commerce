@@ -10,6 +10,7 @@ const router = express.Router();
 router.post(
   '/addProduct',
   passport.authenticate('jwt', { session: false }),
+  roleAuth,
   productController.create
 );
 
