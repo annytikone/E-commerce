@@ -9,12 +9,17 @@ import Product from '../model/product.model';
  * @returns {Promise}
  */
 
-async function getAllProductsBySeller(user) {
-  return Product.find({ listedBy: user.id })
-    .populate('listedBy')
-    .exec((err, items) => {
-      console.log('Populated User ' + items, items.listedBy);
-      return items;
+async function getAllProductsBySeller(query, perPage) {
+  return Promise.all([
+    Product.find(query).limit(Number(perPage)).populate('listedBy').exec(),
+  ])
+    .then((result) => {
+      console.log('result::', result);
+      return result;
+    })
+    .catch((err) => {
+      console.log('catch err:', err);
+      return err;
     });
 }
 

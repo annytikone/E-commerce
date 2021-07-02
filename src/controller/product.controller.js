@@ -40,8 +40,33 @@ async function create(req, res, next) {
 // eslint-disable-next-line consistent-return
 async function getAllProductsBySeller(req, res, next) {
   try {
+    let query;
     const { user } = req;
-    const products = await productService.getAllProductsBySeller(user);
+    const {
+      perPage,
+      department: Department,
+      category: Category,
+      title: Title,
+    } = req.body;
+
+    // if sort is not given at the time of request
+    if (!Department && !Category && !Title) {
+      query = { listedBy: user.id };
+    } else {
+      query = {
+        listedBy: user.id,
+        $or: [
+          { department: Department },
+          { category: Category },
+          { title: Title },
+        ],
+      };
+    }
+
+    const products = await productService.getAllProductsBySeller(
+      query,
+      perPage
+    );
     console.log('listed products:', products);
     return res.json(products);
   } catch (err) {

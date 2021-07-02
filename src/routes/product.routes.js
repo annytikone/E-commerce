@@ -14,7 +14,7 @@ router.post(
   productController.create
 );
 
-router.get(
+router.post(
   '/getProductsbySeller',
   passport.authenticate('jwt', { session: false }),
   productController.getAllProductsBySeller
