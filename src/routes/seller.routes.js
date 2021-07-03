@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express';
 import passport from 'passport';
-import productController from '../controller/product.controller';
+import productController from '../controller/seller.product.controller';
 import isSeller from '../middlewares/roleAuthentication';
 
 const router = express.Router();

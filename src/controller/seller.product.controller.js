@@ -1,11 +1,4 @@
-import hashPassword from '../helper/getHashedPassword';
-import { ErrorHandler } from '../middlewares/errorHandler';
-import config from '../config/config';
-import verifyToken from '../helper/emailAuthorization';
 import productService from '../services/productService';
-import authService from '../services/authService';
-
-const secret = config.JWTSecret;
 
 /**
  * Create a new user.
@@ -56,7 +49,7 @@ async function getAllProductsBySeller(req, res, next) {
         $or: [
           { department: Department },
           { category: Category },
-          { title: Title },
+          { title: { $regex: Title } },
         ],
       };
     }

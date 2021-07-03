@@ -145,6 +145,9 @@ async function confirmation(req, res, next) {
 async function changeRoleToSeller(req, res, next) {
   try {
     const { user } = req;
+    if (user.role.includes('seller')) {
+      throw new ErrorHandler(406, 'Your Already A Seller');
+    }
     const changeRole = await userService.changeRole(user);
     return res.json('You Can Sell Items Now');
   } catch (err) {
