@@ -86,6 +86,7 @@ async function createUser(user) {
  * @returns {Promise}
  */
 async function updateUser(userPayload, query) {
+  console.log('userPayload, query:', userPayload, query);
   return User.findOneAndUpdate(
     query,
     // { $set: { isActive: true } },
@@ -95,7 +96,7 @@ async function updateUser(userPayload, query) {
       if (err) {
         throw Boom.notAcceptable(`something went wrong during update ${err}`);
       }
-      user.isActive = true;
+      if (!user.isActive) user.isActive = true;
       user.save();
       return user;
     }
@@ -114,11 +115,22 @@ async function changeRole(user) {
     { $addToSet: { role: ['seller'] } }
   );
 }
-
+/**
+ * view  user cart.
+ *
+ * @param   {Object}  user
+ * @returns {Promise}
+ */
+async function viewUserCart(query) {
+  return Promise.all([User.find(query).select('cart').populate('cart').exec()])
+    .then((result) => result)
+    .catch((err) => err);
+}
 module.exports = {
   createUser,
   findOneByEmail,
   comparePasswords,
   updateUser,
   changeRole,
+  viewUserCart,
 };
